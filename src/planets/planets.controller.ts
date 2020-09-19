@@ -1,6 +1,7 @@
 import { Body, Controller, Delete, Get, Param, Put, Post } from '@nestjs/common';
 import { PlanetService } from './shared/planet.service';
 import { Planet } from './shared/planet';
+import { PlanetDTO } from './shared/planet.dto';
 
 @Controller('planets')
 export class PlanetsController {
@@ -9,13 +10,18 @@ export class PlanetsController {
 
     }
 
+    @Get('/name/:search')
+    async getByName(@Param('search') name:string) {
+        return this.planetService.getByName(name)
+    }
+
     @Get() 
-    async getAll() : Promise<Planet[]> {
+    async getAll() : Promise<any> {
         return this.planetService.getAll()
     }
 
     @Get(':id') 
-    async getById(@Param('id') id: string) : Promise<Planet> {
+    async getById(@Param('id') id: string) : Promise<any> {
         return this.planetService.getById(id)
     }
 
@@ -25,7 +31,7 @@ export class PlanetsController {
     }
 
     @Put(':id')
-    async update(@Param('id') id: string, @Body() planet:Planet): Promise<Planet> {
+    async update(@Param('id') id: string, @Body() planet:Planet): Promise<any> {
         return this.planetService.update(id, planet)
     }
 
