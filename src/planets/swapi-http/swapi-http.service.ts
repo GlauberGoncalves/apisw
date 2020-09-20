@@ -14,8 +14,7 @@ export class SwapiHttpService {
 
     constructor(private readonly httpService:HttpService) { }
     
-    getNumberApparitionsByName(name:String): Observable<number> {
-        console.log("getNumberApparitions")
+    getNumberApparitionsByName(name:String): Observable<number> {        
         return this.httpService.get<{number: number[]}>(`${this.baseUrl}/planets/?search=${name}`)
             .pipe(
                 map((response:any) => {                    

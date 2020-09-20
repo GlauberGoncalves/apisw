@@ -16,14 +16,12 @@ export class PlanetService {
         const planetsDTO = planets.map(async planet => {
             let planetResponse: PlanetDTO = new PlanetDTO()
             planetResponse.init(planet)            
-            planetResponse.aparitions = await this.swapiHttp.getNumberApparitionsByName(planetResponse.name).toPromise();
-            console.log(planetResponse)
+            planetResponse.aparitions = await this.swapiHttp.getNumberApparitionsByName(planetResponse.name).toPromise();            
             return planetResponse
         });
 
         return (async () => {
-            const allResult = Promise.all(planetsDTO)      
-            console.log(allResult)
+            const allResult = Promise.all(planetsDTO)                  
             return allResult
         })();                
     }
