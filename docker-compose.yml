@@ -1,6 +1,6 @@
 version: '3'
 
-services:  
+services:
   app:
     build: .
     container_name: swapi-app
@@ -12,10 +12,10 @@ services:
     links:
       - db
     networks:
-      - dev   
+      - dev
 
     depends_on:
-      - db  
+      - db
 
   db:
     image: mongo
@@ -29,8 +29,20 @@ services:
     # volumes:
     #   - .docker/mongodb:/data/db
     networks:
-      - dev      
+      - dev
 
-networks: 
+  redis:
+    image: redis
+    container_name: swapi-redis
+    networks:
+      - dev
+    volumes:
+      - .docker/redis:/data/db
+    depends_on:
+      - db
+    ports:
+      - "6379:6379"
+
+networks:
     dev:
       driver: bridge
