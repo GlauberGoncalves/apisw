@@ -12,28 +12,28 @@ export class PlanetService {
 
     async getAll() {
         const planets = await this.planetModel.find().exec()
-        
+
         const planetsDTO = planets.map(async planet => {
-            let planetResponse: PlanetDTO = new PlanetDTO()
-            planetResponse.init(planet)            
-            planetResponse.aparitions = await this.swapiHttp.getNumberApparitionsByName(planetResponse.name).toPromise();            
+            const planetResponse: PlanetDTO = new PlanetDTO()
+            planetResponse.init(planet)
+            planetResponse.aparitions = await this.swapiHttp.getNumberApparitionsByName(planetResponse.name).toPromise();
             return planetResponse
         });
 
         return (async () => {
-            const allResult = Promise.all(planetsDTO)                  
+            const allResult = Promise.all(planetsDTO)
             return allResult
-        })();                
+        })();
     }
 
-    async getById(id: string) {        
+    async getById(id: string) {
         try{
-            const planet = await this.planetModel.findById(id).exec()        
+            const planet = await this.planetModel.findById(id).exec()
             const planetResponse = new PlanetDTO()
-            
+
             planetResponse.init(planet)
-            planetResponse.aparitions = await this.swapiHttp.getNumberApparitionsByName(planetResponse.name).toPromise();        
-            
+            planetResponse.aparitions = await this.swapiHttp.getNumberApparitionsByName(planetResponse.name).toPromise();
+
             return planetResponse
         } catch(e){
             throw new HttpException({
@@ -68,13 +68,13 @@ export class PlanetService {
         return await this.planetModel.deleteOne({ _id: id }).exec()
     }
 
-    async getByName(planetName:string) {                
-        const planet =await this.planetModel.findOne({name:planetName}).exec()        
+    async getByName(planetName:string) {
+        const planet =await this.planetModel.findOne({name:planetName}).exec()
         const planetResponse = new PlanetDTO()
-        
+
         planetResponse.init(planet)
-        planetResponse.aparitions = await this.swapiHttp.getNumberApparitionsByName(planetResponse.name).toPromise();        
-        
+        planetResponse.aparitions = await this.swapiHttp.getNumberApparitionsByName(planetResponse.name).toPromise();
+
         return planetResponse
     }
 

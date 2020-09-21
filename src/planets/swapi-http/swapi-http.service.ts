@@ -10,14 +10,14 @@ const EMPTY = 0
 @Injectable()
 export class SwapiHttpService {
 
-    baseUrl = `https://swapi.dev/api`;
+    baseUrl = process.env.SWAPI_HOST
 
     constructor(private readonly httpService:HttpService) { }
-    
-    getNumberApparitionsByName(name:String): Observable<number> {        
+
+    getNumberApparitionsByName(name:string): Observable<number> {
         return this.httpService.get<{number: number[]}>(`${this.baseUrl}/planets/?search=${name}`)
             .pipe(
-                map((response:any) => {                    
+                map((response:any) => {
                     const planet:PlanetResponse = response.data.results[FIRST_RESULT]
                     return planet ? planet.films.length : EMPTY
                 })
