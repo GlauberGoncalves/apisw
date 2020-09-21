@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common'
+import { HttpException, HttpStatus, Injectable } from '@nestjs/common'
 import { Planet } from './planet'
 import { InjectModel } from '@nestjs/mongoose'
 import { Model } from 'mongoose'
@@ -27,24 +27,41 @@ export class PlanetService {
     }
 
     async getById(id: string) {        
-        
-        const planet = await this.planetModel.findById(id).exec()        
-        const planetResponse = new PlanetDTO()
-        
-        planetResponse.init(planet)
-        planetResponse.aparitions = await this.swapiHttp.getNumberApparitionsByName(planetResponse.name).toPromise();        
-        
-        return planetResponse
+        try{
+            const planet = await this.planetModel.findById(id).exec()        
+            const planetResponse = new PlanetDTO()
+            
+            planetResponse.init(planet)
+            planetResponse.aparitions = await this.swapiHttp.getNumberApparitionsByName(planetResponse.name).toPromise();        
+            
+            return planetResponse
+        } catch(e){
+            throw new HttpException({
+                status: HttpStatus.FORBIDDEN,
+                error: 'this planet was not found',
+            }, HttpStatus.FORBIDDEN);
+        }
      }
 
     async create(planet: Planet) {
-        const createdPlanet = new this.planetModel(planet)
-        return await createdPlanet.save()
+        try {
+            const createdPlanet = new this.planetModel(planet)
+            return await createdPlanet.save()
+        } catch (e) {
+            throw new HttpException('BAD_REQUEST', HttpStatus.BAD_REQUEST);
+        }
      }
 
     async update(id: string, planet:Planet) {
-        await this.planetModel.updateOne({_id: id}, planet).exec()
-        return this.getById(id)
+        try {
+            await this.planetModel.updateOne({_id: id}, planet).exec()
+            return this.getById(id)
+        } catch (e) {
+            throw new HttpException({
+                status: HttpStatus.NOT_FOUND,
+                error: 'this id was not found',
+            }, HttpStatus.NOT_FOUND);
+        }
      }
 
     async delete(id: string) {

@@ -1,14 +1,12 @@
 import { Body, Controller, Delete, Get, Param, Put, Post } from '@nestjs/common';
 import { PlanetService } from './shared/planet.service';
 import { Planet } from './shared/planet';
-import { PlanetDTO } from './shared/planet.dto';
+import { HttpCode } from '@nestjs/common/decorators/http/http-code.decorator';
 
 @Controller('planets')
 export class PlanetsController {
 
-    constructor(private planetService: PlanetService) {
-
-    }
+    constructor(private planetService: PlanetService) { }
 
     @Get('/name/:search')
     async getByName(@Param('search') name:string) {
@@ -21,18 +19,19 @@ export class PlanetsController {
     }
 
     @Get(':id') 
-    async getById(@Param('id') id: string) : Promise<any> {
-        return this.planetService.getById(id)
+    async getById(@Param('id') id: string) : Promise<any> {        
+        return this.planetService.getById(id)        
     }
 
     @Post() 
-    async create(@Body() planet: Planet) : Promise<Planet> {
-        return this.planetService.create(planet)
+    async create(@Body() planet: Planet) : Promise<Planet> {        
+        return this.planetService.create(planet)        
     }
 
     @Put(':id')
-    async update(@Param('id') id: string, @Body() planet:Planet): Promise<any> {
-        return this.planetService.update(id, planet)
+    @HttpCode(204)
+    async update(@Param('id') id: string, @Body() planet:Planet): Promise<any> {        
+        return this.planetService.update(id, planet)                
     }
 
     @Delete(':id')
