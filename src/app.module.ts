@@ -8,7 +8,7 @@ import { PlanetsModule } from './planets/planets.module';
 
 @Module({
   imports: [
-    MongooseModule.forRoot('mongodb://root:root@localhost:27017'),
+    MongooseModule.forRoot('mongodb://root:root@db:27017'),
     PlanetsModule
   ],
   controllers: [AppController],
