@@ -10,7 +10,7 @@ describe('PlanetService', () => {
   let service: PlanetService;
   let swapi: SwapiHttpService;
   let model: Model<Planet>;
-  
+
   const mockModel = {
     new: jest.fn().mockResolvedValue(TestUtil.giveMeAValidPlanet()),
     constructor: jest.fn().mockResolvedValue(TestUtil.giveMeAValidPlanet()),
@@ -57,12 +57,12 @@ describe('PlanetService', () => {
 
 
   describe('getAll', () => {
-    it('should be return all Planets', async () => {   
-      
+    it('should be return all Planets', async () => {
+
       const planet = TestUtil.giveMeAValidPlanet();
 
       jest.spyOn(model, 'find').mockReturnValue({
-        exec: jest.fn().mockResolvedValueOnce([planet, planet]),        
+        exec: jest.fn().mockResolvedValueOnce([planet, planet]),
       } as any);
 
       jest.spyOn(swapi, 'getNumberApparitionsByName').mockReturnValue({
@@ -70,48 +70,48 @@ describe('PlanetService', () => {
       } as any)
 
       const planets = await service.getAll();
-      expect(planets).toHaveLength(2);       
+      expect(planets).toHaveLength(2);
       expect(mockModel.find).toHaveBeenCalledTimes(1)
       expect(swapi.getNumberApparitionsByName).toHaveBeenCalledTimes(2)
     });
   });
-  
+
   describe('findById', () => {
-    it('should be return one PlanetDTO when pass id', async () => {   
-      
+    it('should be return one PlanetDTO when pass id', async () => {
+
       const planet = TestUtil.giveMeAValidPlanet();
       const planetDTO = TestUtil.giveMeAValidPlanetDTO();
-      planetDTO.aparitions = 10
+      planetDTO.appearances = 10
 
       jest.spyOn(model, 'findById').mockReturnValue({
-        exec: jest.fn().mockResolvedValueOnce(planet),        
+        exec: jest.fn().mockResolvedValueOnce(planet),
       } as any);
 
       jest.spyOn(swapi, 'getNumberApparitionsByName').mockReturnValue({
         toPromise: jest.fn().mockResolvedValueOnce(10)
       } as any)
 
-      const foundPlanet = await service.getById('an id');      
+      const foundPlanet = await service.getById('an id');
       expect(foundPlanet).toEqual(planetDTO)
       expect(mockModel.findById).toHaveBeenCalledTimes(1);
-      expect(swapi.getNumberApparitionsByName).toHaveBeenCalledTimes(1)      
+      expect(swapi.getNumberApparitionsByName).toHaveBeenCalledTimes(1)
     });
   });
 
   describe('getByName', () => {
     it('should findOne by name', async () => {
-      
+
       const NUMBER_APARITIONS = 10
 
       const planet = TestUtil.giveMeAValidPlanet();
       const planetDTO = TestUtil.giveMeAValidPlanetDTO();
-      
-      planetDTO.aparitions = NUMBER_APARITIONS      
-      
+
+      planetDTO.appearances = NUMBER_APARITIONS
+
       jest.spyOn(model, 'findOne').mockReturnValueOnce({
         exec: jest.fn().mockResolvedValueOnce(planetDTO)
       } as any);
-      
+
       jest.spyOn(swapi, 'getNumberApparitionsByName').mockReturnValue({
         toPromise: jest.fn().mockResolvedValueOnce(NUMBER_APARITIONS)
       } as any)

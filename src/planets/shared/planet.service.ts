@@ -16,7 +16,7 @@ export class PlanetService {
         const planetsDTO = planets.map(async planet => {
             const planetResponse: PlanetDTO = new PlanetDTO()
             planetResponse.init(planet)
-            planetResponse.aparitions = await this.swapiHttp.getNumberApparitionsByName(planetResponse.name).toPromise();
+            planetResponse.appearances = await this.swapiHttp.getNumberApparitionsByName(planetResponse.name).toPromise();
             return planetResponse
         });
 
@@ -32,14 +32,14 @@ export class PlanetService {
             const planetResponse = new PlanetDTO()
 
             planetResponse.init(planet)
-            planetResponse.aparitions = await this.swapiHttp.getNumberApparitionsByName(planetResponse.name).toPromise();
+            planetResponse.appearances = await this.swapiHttp.getNumberApparitionsByName(planetResponse.name).toPromise();
 
             return planetResponse
         } catch(e){
             throw new HttpException({
-                status: HttpStatus.FORBIDDEN,
+                status: HttpStatus.NOT_FOUND,
                 error: 'this planet was not found',
-            }, HttpStatus.FORBIDDEN);
+            }, HttpStatus.NOT_FOUND);
         }
      }
 
@@ -69,13 +69,19 @@ export class PlanetService {
     }
 
     async getByName(planetName:string) {
-        const planet =await this.planetModel.findOne({name:planetName}).exec()
-        const planetResponse = new PlanetDTO()
+        try {
+            const planet =await this.planetModel.findOne({name:planetName}).exec()
+            const planetResponse = new PlanetDTO()
 
-        planetResponse.init(planet)
-        planetResponse.aparitions = await this.swapiHttp.getNumberApparitionsByName(planetResponse.name).toPromise();
+            planetResponse.init(planet)
+            planetResponse.appearances = await this.swapiHttp.getNumberApparitionsByName(planetResponse.name).toPromise();
+            return planetResponse
 
-        return planetResponse
+        } catch (e) {
+            throw new HttpException({
+                status: HttpStatus.NOT_FOUND,
+                error: 'Planet was not found',
+            }, HttpStatus.NOT_FOUND);
+        }
     }
-
 }

@@ -5,7 +5,7 @@ export class PlanetDTO {
     name: string;
     climate: string;
     terrain: string;
-    aparitions: number;
+    appearances: number;
 
     init(planet: Planet){
         this.id = planet.id

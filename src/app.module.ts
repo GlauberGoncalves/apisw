@@ -17,8 +17,8 @@ import * as redisStore from 'cache-manager-redis-store';
       ttl: 60,
       max: 10,
       store: redisStore,
-      host: 'localhost',
-      port: 6379
+      host: process.env.DBCACHE_HOST,
+      port: process.env.DBCACHE_PORT
     }),
     PlanetsModule
   ],
