@@ -6,7 +6,8 @@ import { MongooseModule } from '@nestjs/mongoose';
 import { PlanetsModule } from './planets/planets.module';
 import {ConfigModule} from "@nestjs/config";
 import { APP_INTERCEPTOR } from '@nestjs/core';
-import * as redisStore from 'cache-manager-redis-store';
+import * as redisStore from '../node_modules/cache-manager-redis-store';
+//import * as redisStore from 'cache-manager-redis-store';
 
 
 @Module({

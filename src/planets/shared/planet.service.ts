@@ -46,6 +46,7 @@ export class PlanetService {
     async create(planet: Planet) {
         try {
             const createdPlanet = new this.planetModel(planet)
+            delete createdPlanet.apparetions;
             return await createdPlanet.save()
         } catch (e) {
             throw new HttpException('BAD_REQUEST', HttpStatus.BAD_REQUEST);
