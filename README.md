@@ -12,7 +12,7 @@ Esse projeto foi desenvolvido com:
 
 ## Rodando o app com docker-compose
 ```bash
-$ docker-compose up -d
+$ docker-compose up --build
 ```
 ## Rodando o app com docker-compose
 #### Instalação
@@ -49,9 +49,6 @@ $ npm run start:dev
 ```bash
 # unidade
 $ yarn run test
-
-# e2e
-$ yarn run test:e2e
 
 # test coverage
 $ yarn run test:cov
