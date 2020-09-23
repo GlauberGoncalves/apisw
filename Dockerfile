@@ -1,11 +1,19 @@
 FROM node:12.14.0-alpine3.11
 
-RUN apk add --no-cache bash
+# diretório alvo
+RUN mkdir -p /usr/src/node-api
+WORKDIR /usr/src/node-api
 
-RUN npm config set cache /home/node/app/.npm-cache --global
+# instalação de dependências
+RUN apk update && apk upgrade
+RUN apk add python3 g++ make
 
-RUN npm i -g @nestjs/cli@7.0.0
+# copiar o projeto e instalar os pacotes com o npm
+COPY . /usr/src/node-api/
+RUN npm install
 
-USER node
+# abrindo a porta 3000
+EXPOSE 3000
 
-WORKDIR /home/node/app
+# inicializando a API
+CMD [ "npm","run", "start:dev" ]

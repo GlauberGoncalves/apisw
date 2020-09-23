@@ -4,11 +4,11 @@ services:
   app:
     build: .
     container_name: swapi-app
-    entrypoint: ./.docker/entrypoint.sh
+    restart: always
+    environment:
+      - NODE_ENV=development
     ports:
       - 3000:3000
-    volumes:
-      - .:/home/node/app
     links:
       - db
     networks:
